@@ -54,7 +54,7 @@ export const Register = () => {
           
           <input 
             type="text" 
-            placeholder="CPF (000.000.000-00)" 
+            placeholder="CPF" 
             value={cpf}
             onChange={(e) => setCpf(handleCpf(e.target.value))}
             className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-500 outline-none transition-all" 
@@ -64,7 +64,7 @@ export const Register = () => {
           
           <input 
             type="text" 
-            placeholder="Telefone ((00) 00000-0000)" 
+            placeholder="Telefone" 
             value={phone}
             onChange={(e) => setPhone(handlePhone(e.target.value))}
             className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-500 outline-none transition-all" 
