@@ -6,6 +6,7 @@ import { CitizenDashboard } from './pages/citizen/Dashboard';
 import { QueueStatus } from './pages/citizen/QueueStatus';
 import { AttendantPanel } from './pages/attendant/Panel';
 import { AdminDashboard } from './pages/admin/Dashboard';
+import { ForgotPassword } from './pages/ForgotPassword';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/citizen" element={<CitizenDashboard />} />
         <Route path="/status" element={<QueueStatus />} />

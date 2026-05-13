@@ -80,9 +80,9 @@ export const Login = () => {
           </div>
 
           <div className="text-right">
-            <button type="button" className="text-xs font-bold text-blue-600 hover:underline">
-              Esqueci minha senha
-            </button>
+            <Link to="/forgot-password" className="text-xs font-bold text-blue-600 hover:underline">
+             Esqueci minha senha
+            </Link>
           </div>
 
           <button className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all text-center">
