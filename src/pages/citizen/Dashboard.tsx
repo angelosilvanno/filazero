@@ -1,39 +1,63 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MapPin, ChevronDown, Check } from 'lucide-react';
 
 export const CitizenDashboard = () => {
   const [userName] = useState(() => {
     return localStorage.getItem('userName') || 'Cidadão';
   });
 
+  const [servicoSelecionado, setServicoSelecionado] = useState<string | null>(null);
+
+  const servicos = ['Consulta Médica', 'Vacinação', 'Retirada de Exames'];
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-blue-900 p-8 rounded-b-[40px] text-white">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      <header className="bg-blue-900 p-8 pt-12 rounded-b-[40px] text-white shadow-lg">
         <h1 className="text-2xl font-bold">Olá, {userName}</h1>
         <p className="text-blue-200 text-sm">Escolha onde deseja ser atendido hoje.</p>
       </header>
 
-      <main className="p-6 -mt-10 max-w-2xl mx-auto space-y-6">
-        <div className="bg-white p-8 rounded-[40px] shadow-xl space-y-6">
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-3 uppercase tracking-wide">Escolha a Unidade</label>
-            <select className="w-full p-5 bg-slate-50 border-2 border-slate-100 rounded-3xl text-lg appearance-none outline-none focus:border-blue-500">
-              <option>Posto de Saúde Central</option>
-              <option>Secretaria de Urbanismo</option>
-              <option>Clínica da Família Norte</option>
-            </select>
+      <main className="p-6 -mt-10 max-w-2xl mx-auto w-full space-y-6">
+        <div className="bg-white p-8 rounded-[40px] shadow-2xl border border-slate-50 space-y-8">
+          
+          <div className="space-y-3">
+            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Escolha a Unidade
+            </label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-blue-600">
+                <MapPin size={20} />
+              </div>
+              <select className="w-full p-5 pl-14 bg-slate-50 border-none rounded-3xl text-lg font-medium text-slate-700 appearance-none outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer">
+                <option>Posto de Saúde Central</option>
+                <option>Secretaria de Urbanismo</option>
+                <option>Clínica da Família Norte</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-slate-400">
+                <ChevronDown size={20} />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-3 uppercase tracking-wide">O que você precisa?</label>
+          <div className="space-y-3">
+            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              O que você precisa?
+            </label>
             <div className="grid grid-cols-1 gap-3">
-              {['Consulta Médica', 'Vacinação', 'Retirada de Exames'].map((item) => (
+              {servicos.map((item) => (
                 <button 
                   key={item} 
                   type="button"
-                  className="p-5 border-2 border-slate-100 rounded-3xl text-left hover:border-blue-500 hover:bg-blue-50 transition-all font-medium text-slate-700"
+                  onClick={() => setServicoSelecionado(item)}
+                  className={`p-5 border-2 rounded-3xl text-left flex items-center justify-between transition-all font-bold ${
+                    servicoSelecionado === item 
+                    ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-md ring-1 ring-blue-600' 
+                    : 'border-slate-100 text-slate-600 hover:border-blue-200 hover:bg-slate-50'
+                  }`}
                 >
                   {item}
+                  {servicoSelecionado === item && <Check size={20} className="text-blue-600" />}
                 </button>
               ))}
             </div>
@@ -41,10 +65,20 @@ export const CitizenDashboard = () => {
 
           <Link 
             to="/status" 
-            className="w-full bg-emerald-500 text-white py-6 rounded-3xl font-black text-2xl shadow-xl hover:bg-emerald-600 transition-all text-center block active:scale-95"
+            className={`w-full py-6 rounded-3xl font-black text-2xl shadow-xl transition-all text-center block active:scale-95 ${
+              servicoSelecionado 
+              ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-emerald-200' 
+              : 'bg-slate-100 text-slate-300 cursor-not-allowed pointer-events-none'
+            }`}
           >
             GERAR SENHA DIGITAL
           </Link>
+
+          {!servicoSelecionado && (
+            <p className="text-center text-[10px] font-bold text-slate-300 uppercase tracking-tighter">
+              Selecione um serviço para continuar
+            </p>
+          )}
         </div>
       </main>
     </div>
