@@ -7,6 +7,7 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
+  const [userType, setUserType] = useState('cidadão');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -31,7 +32,8 @@ export const Register = () => {
     e.preventDefault();
     if (password.length >= 8 && password === confirmPassword) {
       localStorage.setItem('userName', name.split(' ')[0]);
-      navigate('/citizen');
+      localStorage.setItem('userRole', userType);
+      navigate(userType === 'admin' ? '/admin' : '/citizen');
     }
   };
 
@@ -107,6 +109,21 @@ export const Register = () => {
                 <CheckCircle2 className="absolute right-4 top-4 text-emerald-500" size={20} />
               )}
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Tipo de Perfil
+            </label>
+            <select 
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all text-slate-700 font-medium cursor-pointer appearance-none"
+              required
+            >
+              <option value="cidadão">Paciente / Cidadão</option>
+              <option value="admin">Administrador / Atendente</option>
+            </select>
           </div>
 
           <div className="space-y-2">
