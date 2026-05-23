@@ -15,14 +15,13 @@ import { useNavigate } from 'react-router-dom';
 export const AttendantPanel = () => {
   const navigate = useNavigate();
   
-  // Inicialização segura para evitar erros de renderização
   const [adminName] = useState(() => localStorage.getItem('userName') || 'Administrador');
   const [unitName] = useState(() => localStorage.getItem('unitName') || 'Unidade de Saúde Central');
   
   const [tempoDecorrido, setTempoDecorrido] = useState(0);
   const [indiceFila, setIndiceFila] = useState(0);
+  const [concluidosHoje, setConcluidosHoje] = useState(27);
 
-  // Padronização da lista para evitar erro de propriedade inexistente
   const [listaPacientes] = useState([
     { id: 'A043', nome: 'Ângelo Silvano', servico: 'Consulta Clínica Geral' },
     { id: 'A044', nome: 'Maria Silva Pereira', servico: 'Triagem' },
@@ -38,13 +37,22 @@ export const AttendantPanel = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const chamarProximo = () => {
+  const avancarFila = () => {
     if (indiceFila < listaPacientes.length - 1) {
       setIndiceFila(prev => prev + 1);
       setTempoDecorrido(0);
     } else {
       alert("Fila finalizada.");
     }
+  };
+
+  const finalizarAtendimento = () => {
+    setConcluidosHoje(prev => prev + 1);
+    avancarFila();
+  };
+
+  const registrarFalta = () => {
+    avancarFila();
   };
 
   const formatarTempo = (segundos: number) => {
@@ -58,7 +66,6 @@ export const AttendantPanel = () => {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
-      {/* CABEÇALHO */}
       <header className="bg-white border-b border-slate-100 px-8 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-2">
@@ -97,7 +104,6 @@ export const AttendantPanel = () => {
       <main className="p-8 max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
           
-          {/* ÁREA DE CHAMADA */}
           <div className="bg-white rounded-[40px] p-10 shadow-sm border border-slate-50 flex items-center justify-between">
             <div>
               <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-[11px] font-black uppercase tracking-widest">Chamando Agora</span>
@@ -109,7 +115,7 @@ export const AttendantPanel = () => {
             </div>
             
             <button 
-              onClick={chamarProximo}
+              onClick={avancarFila}
               className="bg-blue-600 hover:bg-blue-700 text-white w-60 h-60 rounded-[40px] shadow-2xl flex flex-col items-center justify-center gap-4 transition-all hover:scale-105 active:scale-95"
             >
               <Megaphone size={48} className="animate-bounce" />
@@ -118,7 +124,6 @@ export const AttendantPanel = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* TEMPO DE ATENDIMENTO */}
             <div className="bg-white rounded-[40px] p-8 shadow-sm border border-slate-50">
               <div className="flex justify-between items-start mb-6">
                 <div>
@@ -132,16 +137,21 @@ export const AttendantPanel = () => {
                 </div>
               </div>
               <div className="space-y-3">
-                <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all">
+                <button 
+                  onClick={finalizarAtendimento}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95"
+                >
                   <CheckCircle2 size={20} /> Finalizar e Liberar
                 </button>
-                <button className="w-full border-2 border-red-50 text-red-400 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50 transition-all">
+                <button 
+                  onClick={registrarFalta}
+                  className="w-full border-2 border-red-50 text-red-400 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50 transition-all active:scale-95"
+                >
                   <XCircle size={20} /> Registrar Falta
                 </button>
               </div>
             </div>
 
-            {/* STATUS DA FILA */}
             <div className="space-y-6">
               <div className="bg-white rounded-[40px] p-8 shadow-sm border border-slate-50 flex items-center gap-6">
                 <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center">
@@ -157,14 +167,13 @@ export const AttendantPanel = () => {
                   <ClipboardCheck size={32} />
                 </div>
                 <div>
-                  <p className="text-3xl font-black text-slate-900 leading-none">{indiceFila + 27}</p>
+                  <p className="text-3xl font-black text-slate-900 leading-none">{concluidosHoje}</p>
                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-1">Concluídos Hoje</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* MÉTRICAS DE APOIO */}
           <div className="bg-white rounded-[40px] p-8 shadow-sm border border-slate-50 grid grid-cols-3 text-center items-center">
             <div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ritmo Médio</p>
@@ -186,7 +195,6 @@ export const AttendantPanel = () => {
           </div>
         </div>
 
-        {/* LISTA LATERAL */}
         <aside className="lg:col-span-4 bg-white rounded-[40px] p-8 shadow-sm border border-slate-50 flex flex-col">
           <div className="flex justify-between items-center mb-8">
             <h3 className="text-xl font-black text-slate-900 tracking-tight">Fila Atual</h3>

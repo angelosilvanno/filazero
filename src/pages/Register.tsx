@@ -31,7 +31,7 @@ export const Register = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length >= 8 && password === confirmPassword) {
-      localStorage.setItem('userName', name.split(' ')[0]);
+      localStorage.setItem('userName', name);
       localStorage.setItem('userRole', userType);
       navigate('/login');
     }
