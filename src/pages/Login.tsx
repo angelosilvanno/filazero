@@ -17,23 +17,25 @@ export const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/citizen');
+    const userRole = localStorage.getItem('userRole');
+
+    if (userRole === 'admin') {
+      navigate('/attendant');
+    } else {
+      navigate('/citizen');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4">
-      
-      {/* Topo / Logo */}
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4 font-sans">
       <div className="flex flex-col items-center mb-8">
         <div className="w-16 h-16 bg-blue-600 rounded-[20px] flex items-center justify-center mb-2 shadow-lg shadow-blue-200">
           <Ticket className="text-white" size={32} />
         </div>
-        <h1 className="text-3xl font-black text-blue-900 tracking-tighter">FilaZero</h1>
+        <h1 className="text-3xl font-black text-blue-900 tracking-tighter uppercase text-center">FilaZero</h1>
       </div>
 
-      {/* Card de Login */}
       <div className="bg-white w-full max-w-[420px] p-10 rounded-[32px] shadow-2xl shadow-slate-200/60 border border-slate-100">
-        
         <div className="mb-10 text-left">
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Bem-vindo de volta</h2>
           <p className="text-slate-500 text-sm">
@@ -56,7 +58,7 @@ export const Login = () => {
                 onChange={(e) => setCpf(handleCpf(e.target.value))}
                 placeholder="000.000.000-00" 
                 maxLength={14}
-                className="block w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all" 
+                className="block w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all font-medium" 
                 required
               />
             </div>
@@ -72,20 +74,20 @@ export const Login = () => {
               </div>
               <input 
                 type="password"
-                placeholder="........" 
-                className="block w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all" 
+                placeholder="••••••••" 
+                className="block w-full pl-14 pr-4 py-4 bg-slate-50 border-none rounded-2xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all font-medium" 
                 required
               />
             </div>
           </div>
 
           <div className="text-right">
-            <Link to="/forgot-password" className="text-xs font-bold text-blue-600 hover:underline">
-             Esqueci minha senha
+            <Link to="/forgot-password" title="Esqueci minha senha" className="text-xs font-bold text-blue-600 hover:underline">
+              Esqueci minha senha
             </Link>
           </div>
 
-          <button className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all text-center">
+          <button type="submit" className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all text-center">
             Entrar
           </button>
         </form>
@@ -108,12 +110,11 @@ export const Login = () => {
         </div>
       </div>
 
-      {/* Rodapé Automático */}
       <footer className="mt-12 text-center text-slate-400 space-y-4">
         <p className="text-[13px]">
           © {new Date().getFullYear()} FilaZero. Todos os direitos reservados.
         </p>
-        <div className="flex gap-4 justify-center text-xs font-bold">
+        <div className="flex gap-4 justify-center text-xs font-bold uppercase tracking-tighter">
           <a href="#" className="hover:text-blue-600">Termos de Uso</a>
           <a href="#" className="hover:text-blue-600">Privacidade</a>
           <a href="#" className="hover:text-blue-600">Ajuda</a>
