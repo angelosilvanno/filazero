@@ -33,7 +33,7 @@ export const Register = () => {
     if (password.length >= 8 && password === confirmPassword) {
       localStorage.setItem('userName', name.split(' ')[0]);
       localStorage.setItem('userRole', userType);
-      navigate(userType === 'admin' ? '/admin' : '/citizen');
+      navigate('/login');
     }
   };
 
