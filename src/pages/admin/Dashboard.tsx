@@ -1,52 +1,102 @@
-export const AdminDashboard = () => {
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { MapPin, ChevronDown, Check, LogOut } from 'lucide-react';
+
+export const CitizenDashboard = () => {
+  const navigate = useNavigate();
+  const [userName] = useState(() => {
+    return localStorage.getItem('userName') || 'Cidadão';
+  });
+
+  const [servicoSelecionado, setServicoSelecionado] = useState<string | null>(null);
+
+  const servicos = ['Consulta Médica', 'Vacinação', 'Retirada de Exames'];
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-black text-blue-900 mb-10">Dashboard Administrativo</h1>
-
-        {/* Estatísticas Rápidas */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-          {[
-            { label: 'Atendimentos Hoje', value: '1,284', color: 'text-blue-600' },
-            { label: 'Tempo Médio', value: '08m 22s', color: 'text-emerald-600' },
-            { label: 'Unidades Ativas', value: '07', color: 'text-purple-600' },
-            { label: 'Alertas de Espera', value: '03', color: 'text-red-600' },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white p-8 rounded-[30px] shadow-sm border border-slate-100">
-              <p className="text-slate-400 text-xs font-black uppercase mb-2">{stat.label}</p>
-              <p className={`text-3xl font-black ${stat.color}`}>{stat.value}</p>
-            </div>
-          ))}
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      <header className="bg-blue-900 p-8 pt-12 rounded-b-[40px] text-white shadow-lg relative">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold">Olá, {userName}</h1>
+            <p className="text-blue-200 text-sm">Escolha onde deseja ser atendido hoje.</p>
+          </div>
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-xs font-bold transition-all uppercase tracking-widest border border-white/10"
+          >
+            <LogOut size={16} /> Sair
+          </button>
         </div>
+      </header>
 
-        {/* Gestão */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="bg-white p-10 rounded-[40px] shadow-lg">
-            <div className="flex justify-between items-center mb-8">
-              <h3 className="text-xl font-black text-blue-900">Gerenciar Unidades</h3>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold">+ Nova Unidade</button>
-            </div>
-            {/* Lista simulada */}
-            <div className="space-y-4">
-              <div className="p-4 border-2 border-slate-50 rounded-2xl flex justify-between">
-                <div>
-                  <p className="font-bold">Posto de Saúde Central</p>
-                  <p className="text-sm text-slate-400">08:00 - 18:00</p>
-                </div>
-                <button className="text-blue-600 font-bold">Editar</button>
+      <main className="p-6 -mt-10 max-w-2xl mx-auto w-full space-y-6">
+        <div className="bg-white p-8 rounded-[40px] shadow-2xl border border-slate-50 space-y-8">
+          
+          <div className="space-y-3">
+            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Escolha a Unidade
+            </label>
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-blue-600">
+                <MapPin size={20} />
+              </div>
+              <select className="w-full p-5 pl-14 bg-slate-50 border-none rounded-3xl text-lg font-medium text-slate-700 appearance-none outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer">
+                <option>Posto de Saúde Central</option>
+                <option>Secretaria de Urbanismo</option>
+                <option>Clínica da Família Norte</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-slate-400">
+                <ChevronDown size={20} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-10 rounded-[40px] shadow-lg">
-            <h3 className="text-xl font-black text-blue-900 mb-8">Tipos de Atendimento</h3>
-            <div className="flex gap-2">
-              <input placeholder="Ex: Exame Laboratorial" className="flex-1 p-4 bg-slate-50 rounded-2xl outline-none border-2 border-transparent focus:border-blue-500" />
-              <button className="bg-slate-900 text-white px-6 rounded-2xl font-bold">Adicionar</button>
+          <div className="space-y-3">
+            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              O que você precisa?
+            </label>
+            <div className="grid grid-cols-1 gap-3">
+              {servicos.map((item) => (
+                <button 
+                  key={item} 
+                  type="button"
+                  onClick={() => setServicoSelecionado(item)}
+                  className={`p-5 border-2 rounded-3xl text-left flex items-center justify-between transition-all font-bold ${
+                    servicoSelecionado === item 
+                    ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-md ring-1 ring-blue-600' 
+                    : 'border-slate-100 text-slate-600 hover:border-blue-200 hover:bg-slate-50'
+                  }`}
+                >
+                  {item}
+                  {servicoSelecionado === item && <Check size={20} className="text-blue-600" />}
+                </button>
+              ))}
             </div>
           </div>
+
+          <Link 
+            to="/status" 
+            className={`w-full py-6 rounded-3xl font-black text-2xl shadow-xl transition-all text-center block active:scale-95 ${
+              servicoSelecionado 
+              ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-emerald-200' 
+              : 'bg-slate-100 text-slate-300 cursor-not-allowed pointer-events-none'
+            }`}
+          >
+            GERAR SENHA DIGITAL
+          </Link>
+
+          {!servicoSelecionado && (
+            <p className="text-center text-[10px] font-bold text-slate-300 uppercase tracking-tighter">
+              Selecione um serviço para continuar
+            </p>
+          )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };
