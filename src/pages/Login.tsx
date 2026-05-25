@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IdCard, Lock, Ticket } from 'lucide-react';
+import { IdCard, Lock, Ticket, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface Usuario {
@@ -13,6 +13,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
+  const [erro, setErro] = useState<string | null>(null);
 
   const handleCpf = (value: string) => {
     return value
@@ -39,7 +40,7 @@ export const Login = () => {
         navigate('/citizen');
       }
     } else {
-      alert('Dados de acesso incorretos. Verifique seu CPF e senha.');
+       setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
     }
   };
 
@@ -77,6 +78,13 @@ export const Login = () => {
               Acesse sua conta para gerenciar seus agendamentos.
             </p>
           </div>
+
+          {erro && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
+              <AlertCircle className="text-red-500" size={18} />
+              <p className="text-red-600 text-xs font-bold">{erro}</p>
+            </div>
+         )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1">
