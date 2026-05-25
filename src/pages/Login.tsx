@@ -16,6 +16,7 @@ export const Login = () => {
   const [erro, setErro] = useState<string | null>(null);
 
   const handleCpf = (value: string) => {
+    setErro(null);
     return value
       .replace(/\D/g, '')
       .replace(/(\d{3})(\d)/, '$1.$2')
@@ -35,12 +36,14 @@ export const Login = () => {
       localStorage.setItem('userRole', usuarioEncontrado.userType);
 
       if (usuarioEncontrado.userType === 'admin') {
+        navigate('/admin');
+      } else if (usuarioEncontrado.userType === 'atendente') {
         navigate('/attendant');
       } else {
         navigate('/citizen');
       }
     } else {
-       setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
+      setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
     }
   };
 
@@ -80,11 +83,11 @@ export const Login = () => {
           </div>
 
           {erro && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
+            <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="text-red-500" size={18} />
               <p className="text-red-600 text-xs font-bold">{erro}</p>
             </div>
-         )}
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1">
@@ -118,7 +121,7 @@ export const Login = () => {
                 <input 
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {setPassword(e.target.value); setErro(null);}}
                   placeholder="••••••••" 
                   className="block w-full pl-12 pr-4 py-3.5 bg-slate-100/50 lg:bg-slate-50 border-none rounded-xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all text-sm" 
                   required
@@ -132,7 +135,7 @@ export const Login = () => {
               </Link>
             </div>
 
-            <button type="submit" className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-base shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all text-center">
+            <button type="submit" className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-base shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-[0.98] transition-all text-center uppercase tracking-widest">
               Entrar
             </button>
           </form>
@@ -148,7 +151,7 @@ export const Login = () => {
             <p className="text-[11px] text-slate-400 font-medium tracking-wide">Ainda não tem uma conta?</p>
             <Link 
               to="/register" 
-              className="block w-full bg-slate-100 text-blue-600 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center"
+              className="block w-full bg-slate-100 text-blue-600 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center uppercase tracking-widest"
             >
               Criar conta gratuita
             </Link>
