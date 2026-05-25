@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-  Megaphone,Users, ClipboardCheck, 
+  Megaphone, CheckCircle2, XCircle, Users, ClipboardCheck, 
   LogOut, ArrowRight, List, FileText
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +22,24 @@ export const AttendantPanel = () => {
 
   useEffect(() => {
     const carregarDados = () => {
-      const filaSalva = JSON.parse(localStorage.getItem('filaReal') || '[]');
+      let filaSalva = JSON.parse(localStorage.getItem('filaReal') || '[]');
+      
+      if (filaSalva.length === 0) {
+        filaSalva = [
+          { id: 'A043', nome: 'Mariana Ferreira Lima', servico: 'Vacinação', chegada: '08:30' },
+          { id: 'B012', nome: 'João Carlos da Silva', servico: 'Consulta', chegada: '08:45' },
+          { id: 'A045', nome: 'Beatriz Santos', servico: 'Exames', chegada: '09:10' }
+        ];
+        localStorage.setItem('filaReal', JSON.stringify(filaSalva));
+      }
+      
       setFila(filaSalva);
     };
+
     carregarDados();
     const interval = setInterval(carregarDados, 3000);
     const timer = setInterval(() => setTempoDecorrido(prev => prev + 1), 1000);
+    
     return () => { 
       clearInterval(interval); 
       clearInterval(timer); 
@@ -35,7 +47,8 @@ export const AttendantPanel = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
     navigate('/login');
   };
 
@@ -45,6 +58,14 @@ export const AttendantPanel = () => {
     localStorage.setItem('filaReal', JSON.stringify(novaFila));
     setFila(novaFila);
     setConcluidosHoje(prev => prev + 1);
+    setTempoDecorrido(0);
+  };
+
+  const registrarFalta = () => {
+    if (fila.length === 0) return;
+    const novaFila = fila.slice(1);
+    localStorage.setItem('filaReal', JSON.stringify(novaFila));
+    setFila(novaFila);
     setTempoDecorrido(0);
   };
 
@@ -92,7 +113,7 @@ export const AttendantPanel = () => {
         {abaAtiva === 'painel' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in fade-in duration-500">
             <div className="lg:col-span-8 space-y-8">
-              <div className="bg-white rounded-[40px] p-10 shadow-sm border border-slate-50 flex items-center justify-between">
+              <div className="bg-white rounded-[40px] p-10 shadow-sm border border-slate-50 flex items-center justify-between transition-all">
                 <div className="flex-1">
                   <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Em Atendimento</span>
                   <h2 className="text-6xl font-black text-blue-900 leading-none my-4 tracking-tighter">{pacienteAtual.id}</h2>
@@ -109,8 +130,12 @@ export const AttendantPanel = () => {
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tempo Decorrido</p>
                   <h3 className={`text-5xl font-black mb-8 ${tempoDecorrido > 900 ? 'text-red-500' : 'text-slate-900'}`}>{formatarTempo(tempoDecorrido)}</h3>
                   <div className="flex gap-3">
-                    <button onClick={finalizarAtendimento} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-100">Finalizar</button>
-                    <button onClick={finalizarAtendimento} className="flex-1 border-2 border-red-50 text-red-500 py-4 rounded-2xl font-black uppercase text-[10px] flex items-center justify-center gap-2 hover:bg-red-50 transition-all active:scale-95 text-center">Falta</button>
+                    <button onClick={finalizarAtendimento} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-100">
+                      <CheckCircle2 size={18} /> Finalizar
+                    </button>
+                    <button onClick={registrarFalta} className="flex-1 border-2 border-red-50 text-red-500 py-4 rounded-2xl font-black uppercase text-[10px] flex items-center justify-center gap-2 hover:bg-red-50 transition-all active:scale-95 text-center">
+                      <XCircle size={18} /> Falta
+                    </button>
                   </div>
                 </div>
                 <div className="space-y-6 flex flex-col justify-center">
