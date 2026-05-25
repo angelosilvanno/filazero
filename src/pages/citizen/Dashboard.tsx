@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { MapPin, ChevronDown, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin, ChevronDown, Check, LogOut } from 'lucide-react';
 
 export const CitizenDashboard = () => {
+  const navigate = useNavigate();
   const [userName] = useState(() => {
     return localStorage.getItem('userName') || 'Cidadão';
   });
@@ -11,18 +12,50 @@ export const CitizenDashboard = () => {
 
   const servicos = ['Consulta Médica', 'Vacinação', 'Retirada de Exames'];
 
+  const handleGerarSenha = () => {
+    if (!servicoSelecionado) return;
+
+    const filaAtual = JSON.parse(localStorage.getItem('filaReal') || '[]');
+    const novaSenha = {
+      id: `A${Math.floor(Math.random() * 900) + 100}`,
+      nome: userName,
+      servico: servicoSelecionado,
+      chegada: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    filaAtual.push(novaSenha);
+    localStorage.setItem('filaReal', JSON.stringify(filaAtual));
+    localStorage.setItem('minhaSenha', JSON.stringify(novaSenha));
+    navigate('/status');
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <header className="bg-blue-900 p-8 pt-12 rounded-b-[40px] text-white shadow-lg">
-        <h1 className="text-2xl font-bold">Olá, {userName}</h1>
-        <p className="text-blue-200 text-sm">Escolha onde deseja ser atendido hoje.</p>
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans overflow-x-hidden">
+      <header className="bg-blue-900 p-8 pt-12 rounded-b-[40px] text-white shadow-lg relative shrink-0">
+        <div className="flex justify-between items-start max-w-2xl mx-auto w-full">
+          <div>
+            <h1 className="text-2xl font-bold italic tracking-tight">Olá, {userName}</h1>
+            <p className="text-blue-200 text-sm">Escolha onde deseja ser atendido hoje.</p>
+          </div>
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all uppercase border border-white/10 active:scale-95"
+          >
+            <LogOut size={14} /> Sair
+          </button>
+        </div>
       </header>
 
       <main className="p-6 -mt-10 max-w-2xl mx-auto w-full space-y-6">
         <div className="bg-white p-8 rounded-[40px] shadow-2xl border border-slate-50 space-y-8">
           
           <div className="space-y-3">
-            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
               Escolha a Unidade
             </label>
             <div className="relative group">
@@ -41,7 +74,7 @@ export const CitizenDashboard = () => {
           </div>
 
           <div className="space-y-3">
-            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
               O que você precisa?
             </label>
             <div className="grid grid-cols-1 gap-3">
@@ -63,16 +96,16 @@ export const CitizenDashboard = () => {
             </div>
           </div>
 
-          <Link 
-            to="/status" 
+          <button 
+            onClick={handleGerarSenha}
             className={`w-full py-6 rounded-3xl font-black text-2xl shadow-xl transition-all text-center block active:scale-95 ${
               servicoSelecionado 
               ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-emerald-200' 
-              : 'bg-slate-100 text-slate-300 cursor-not-allowed pointer-events-none'
+              : 'bg-slate-100 text-slate-300 cursor-not-allowed'
             }`}
           >
             GERAR SENHA DIGITAL
-          </Link>
+          </button>
 
           {!servicoSelecionado && (
             <p className="text-center text-[10px] font-bold text-slate-300 uppercase tracking-tighter">
