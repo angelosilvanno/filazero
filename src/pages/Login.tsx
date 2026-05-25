@@ -2,9 +2,17 @@ import { useState } from 'react';
 import { IdCard, Lock, Ticket } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
+interface Usuario {
+  name: string;
+  cpf: string;
+  userType: string;
+  password?: string;
+}
+
 export const Login = () => {
   const navigate = useNavigate();
   const [cpf, setCpf] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleCpf = (value: string) => {
     return value
@@ -17,12 +25,21 @@ export const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const userRole = localStorage.getItem('userRole');
+    
+    const usuarios = JSON.parse(localStorage.getItem('usuariosCadastrados') || '[]');
+    const usuarioEncontrado = usuarios.find((u: Usuario) => u.cpf === cpf && u.password === password);
 
-    if (userRole === 'admin') {
-      navigate('/attendant');
+    if (usuarioEncontrado) {
+      localStorage.setItem('userName', usuarioEncontrado.name);
+      localStorage.setItem('userRole', usuarioEncontrado.userType);
+
+      if (usuarioEncontrado.userType === 'admin') {
+        navigate('/attendant');
+      } else {
+        navigate('/citizen');
+      }
     } else {
-      navigate('/citizen');
+      alert('Dados de acesso incorretos. Verifique seu CPF e senha.');
     }
   };
 
@@ -92,6 +109,8 @@ export const Login = () => {
                 </div>
                 <input 
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••" 
                   className="block w-full pl-12 pr-4 py-3.5 bg-slate-100/50 lg:bg-slate-50 border-none rounded-xl text-slate-900 placeholder:text-slate-300 focus:ring-2 focus:ring-blue-600 outline-none transition-all text-sm" 
                   required
