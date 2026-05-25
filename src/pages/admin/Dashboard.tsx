@@ -1,19 +1,5 @@
 import { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  MapPin, 
-  Users, 
-  ClipboardList, 
-  BarChart3, 
-  Settings, 
-  LogOut, 
-  Bell, 
-  Search,
-  Filter,
-  ArrowUpRight,
-  MoreVertical,
-  ChevronRight
-} from 'lucide-react';
+import { LayoutDashboard, MapPin, Users, ClipboardList, BarChart3,  Settings, LogOut, Bell, Search, Filter, ArrowUpRight, MoreVertical, ChevronRight} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const AdminDashboard = () => {
