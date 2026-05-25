@@ -31,8 +31,22 @@ export const Register = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length >= 8 && password === confirmPassword) {
+      const usuariosExistentes = JSON.parse(localStorage.getItem('usuariosCadastrados') || '[]');
+      
+      const novoUsuario = {
+        name,
+        cpf,
+        phone,
+        userType,
+        password
+      };
+
+      usuariosExistentes.push(novoUsuario);
+      localStorage.setItem('usuariosCadastrados', JSON.stringify(usuariosExistentes));
+      
       localStorage.setItem('userName', name);
       localStorage.setItem('userRole', userType);
+      
       navigate('/login');
     }
   };
