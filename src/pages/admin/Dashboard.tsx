@@ -10,13 +10,24 @@ export const AdminDashboard = () => {
 
   const handleGerarSenha = () => {
     if (!servicoSelecionado) return;
-    const filaAtual = JSON.parse(localStorage.getItem('filaReal') || '[]');
+    
+    let filaAtual = JSON.parse(localStorage.getItem('filaReal') || '[]');
+    
+    if (filaAtual.length === 0) {
+      filaAtual = [
+        { id: 'A043', nome: 'Mariana Ferreira Lima', servico: 'Vacinação', chegada: '08:30' },
+        { id: 'B012', nome: 'João Carlos da Silva', servico: 'Consulta', chegada: '08:45' },
+        { id: 'A045', nome: 'Beatriz Santos', servico: 'Exames', chegada: '09:10' }
+      ];
+    }
+
     const novaSenha = {
       id: `A${Math.floor(Math.random() * 900) + 100}`,
       nome: userName,
       servico: servicoSelecionado,
       chegada: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
     };
+
     filaAtual.push(novaSenha);
     localStorage.setItem('filaReal', JSON.stringify(filaAtual));
     localStorage.setItem('minhaSenha', JSON.stringify(novaSenha));
@@ -24,7 +35,8 @@ export const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
     navigate('/login');
   };
 
@@ -48,7 +60,7 @@ export const AdminDashboard = () => {
             <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Escolha a Unidade</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-blue-600"><MapPin size={20} /></div>
-              <select className="w-full p-5 pl-14 bg-slate-50 border-none rounded-3xl text-lg font-medium text-slate-700 appearance-none outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+              <select className="w-full p-5 pl-14 bg-slate-50 border-none rounded-3xl text-lg font-medium text-slate-700 appearance-none outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer">
                 <option>Posto de Saúde Central</option>
                 <option>Secretaria de Urbanismo</option>
                 <option>Clínica da Família Norte</option>
