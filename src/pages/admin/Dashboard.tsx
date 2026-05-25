@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, ChevronDown, Check, LogOut } from 'lucide-react';
 
-export const CitizenDashboard = () => {
+export const AdminDashboard = () => {
   const navigate = useNavigate();
   const [userName] = useState(() => localStorage.getItem('userName') || 'Cidadão');
   const [servicoSelecionado, setServicoSelecionado] = useState<string | null>(null);
