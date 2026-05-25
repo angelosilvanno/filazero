@@ -21,7 +21,7 @@ export const Home = () => {
         </div>
         <div className="hidden md:flex gap-8 text-sm font-medium text-slate-600">
           <a href="#como-funciona" className="hover:text-blue-600 transition-colors">Como Funciona</a>
-          <a href="#experiencia-premium" className="hover:text-blue-600 transition-colors">Unidades</a>
+          <a href="#respeito-ao-tempo" className="hover:text-blue-600 transition-colors">Unidades</a>
           <a href="#suporte" className="hover:text-blue-600 transition-colors">Suporte</a>
         </div>
         <Link to="/login" className="bg-blue-600 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95">
@@ -76,9 +76,9 @@ export const Home = () => {
         </div>
       </section>
 
-      <section id="experiencia-premium" className="py-24 px-6 max-w-7xl mx-auto scroll-mt-24">
+      <section id="respeito-ao-tempo" className="py-24 px-6 max-w-7xl mx-auto scroll-mt-24">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black text-blue-900 mb-4">Experiência Premium</h2>
+          <h2 className="text-4xl font-black text-blue-900 mb-4">Respeito ao seu tempo</h2>
           <p className="text-slate-500 text-lg">Por que escolher o FilaZero para o seu dia a dia?</p>
         </div>
 
