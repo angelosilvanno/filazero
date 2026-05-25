@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Ticket, AlertCircle, CheckCircle2, ArrowRight, User, ShieldCheck } from 'lucide-react';
+import { Ticket, AlertCircle, CheckCircle2, ArrowRight, User, ShieldCheck, Stethoscope } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Register = () => {
@@ -7,7 +7,7 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState('cidadão');
+  const [userType, setUserType] = useState('paciente');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -128,30 +128,42 @@ export const Register = () => {
 
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tipo de Perfil</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <button 
                   type="button"
-                  onClick={() => setUserType('cidadão')}
-                  className={`flex items-center justify-center p-3 rounded-xl border-2 transition-all gap-2 ${
-                    userType === 'cidadão' 
+                  onClick={() => setUserType('paciente')}
+                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
+                    userType === 'paciente' 
                     ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
                     : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
                   }`}
                 >
-                  <User size={16} />
-                  <span className="text-[10px] font-bold uppercase">Paciente</span>
+                  <User size={14} />
+                  <span className="text-[8px] font-bold uppercase text-center">Paciente</span>
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setUserType('atendente')}
+                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
+                    userType === 'atendente' 
+                    ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
+                    : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
+                  }`}
+                >
+                  <Stethoscope size={14} />
+                  <span className="text-[8px] font-bold uppercase text-center">Atendente</span>
                 </button>
                 <button 
                   type="button"
                   onClick={() => setUserType('admin')}
-                  className={`flex items-center justify-center p-3 rounded-xl border-2 transition-all gap-2 ${
+                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
                     userType === 'admin' 
                     ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
                     : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
                   }`}
                 >
-                  <ShieldCheck size={16} />
-                  <span className="text-[10px] font-bold uppercase">Admin</span>
+                  <ShieldCheck size={14} />
+                  <span className="text-[8px] font-bold uppercase text-center">Admin</span>
                 </button>
               </div>
             </div>
