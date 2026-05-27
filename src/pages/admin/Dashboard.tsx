@@ -69,7 +69,7 @@ export const AdminDashboard = () => {
             <div className="flex items-center gap-3 pl-6 border-l border-slate-100">
               <div className="text-right">
                 <p className="text-sm font-black text-slate-900 leading-none">{adminName}</p>
-                <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Super Admin</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Admin</p>
               </div>
               <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 font-bold border border-slate-200">
                 {adminName[0]}
