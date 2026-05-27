@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { Ticket, AlertCircle, CheckCircle2, ArrowRight, User, ShieldCheck, Stethoscope } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
+interface Usuario {
+  name: string;
+  cpf: string;
+  phone: string;
+  userType: string;
+  password?: string;
+}
+
 export const Register = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -41,11 +49,15 @@ export const Register = () => {
         password
       };
 
+      const usuarioJaExiste = usuariosExistentes.some((u: Usuario) => u.cpf === cpf);
+      
+      if (usuarioJaExiste) {
+        alert('Este CPF já está cadastrado no sistema.');
+        return;
+      }
+
       usuariosExistentes.push(novoUsuario);
       localStorage.setItem('usuariosCadastrados', JSON.stringify(usuariosExistentes));
-      
-      localStorage.setItem('userName', name);
-      localStorage.setItem('userRole', userType);
       
       navigate('/login');
     }
@@ -54,7 +66,7 @@ export const Register = () => {
   const isPasswordInvalid = password.length > 0 && password.length < 8;
 
   return (
-    <div className="h-screen bg-white flex flex-col lg:flex-row overflow-hidden">
+    <div className="h-screen bg-white flex flex-col lg:flex-row overflow-hidden font-sans">
       <div className="hidden lg:flex flex-col items-center justify-center bg-blue-900 px-8 lg:w-[35%] xl:w-[30%] text-white relative">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-48 h-48 bg-white rounded-full blur-3xl"></div>
@@ -72,7 +84,7 @@ export const Register = () => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 lg:bg-white overflow-y-auto py-6 px-6">
+      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 lg:bg-white overflow-y-auto py-6 px-6 h-full">
         <div className="w-full max-w-[480px]">
           <div className="mb-6 text-center lg:text-left">
             <h2 className="text-3xl font-bold text-slate-900 mb-1">Criar Conta</h2>
@@ -202,7 +214,7 @@ export const Register = () => {
             <div className="flex items-center gap-2 py-1">
               <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer" required />
               <label className="text-[11px] text-slate-500 font-medium">
-                Li e aceito os  <span className="text-blue-600 font-bold cursor-pointer">termos de uso</span> e a <span className="text-blue-600 font-bold cursor-pointer">privacidade</span>.
+                Li e aceito os <span className="text-blue-600 font-bold cursor-pointer">termos de uso</span> e a <span className="text-blue-600 font-bold cursor-pointer">privacidade</span>.
               </label>
             </div>
 
