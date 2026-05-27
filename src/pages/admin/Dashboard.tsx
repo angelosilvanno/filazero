@@ -80,7 +80,7 @@ export const AdminDashboard = () => {
 
         <main className="p-8 space-y-8 overflow-y-auto">
           <div>
-            <h1 className="text-2xl font-black text-blue-900 tracking-tight">Dashboard Administrativo</h1>
+            <h1 className="text-2xl font-black text-blue-900 tracking-tight">Painel de Gestão</h1>
             <p className="text-slate-400 text-sm font-medium">Bem-vindo de volta, {adminName.split(' ')[0]}. Aqui está o resumo de hoje.</p>
           </div>
 
