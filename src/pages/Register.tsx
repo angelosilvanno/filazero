@@ -39,34 +39,43 @@ export const Register = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length >= 8 && password === confirmPassword) {
-      const usuariosExistentes = JSON.parse(localStorage.getItem('usuariosCadastrados') || '[]');
-      
-      const novoUsuario = {
-        name,
-        cpf,
-        phone,
-        userType,
-        password
+      const request = indexedDB.open('FilaZeroDB', 1);
+
+      request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+       const db = (event.target as IDBOpenDBRequest).result;
+        if (!db.objectStoreNames.contains('usuarios')) {
+          db.createObjectStore('usuarios', { keyPath: 'cpf' });
+        }
       };
 
-      const usuarioJaExiste = usuariosExistentes.some((u: Usuario) => u.cpf === cpf);
-      
-      if (usuarioJaExiste) {
-        alert('Este CPF já está cadastrado no sistema.');
-        return;
-      }
+      request.onsuccess = (event: Event) => {
+        const db = (event.target as IDBRequest).result;
+        const transaction = db.transaction('usuarios', 'readwrite');
+        const store = transaction.objectStore('usuarios');
 
-      usuariosExistentes.push(novoUsuario);
-      localStorage.setItem('usuariosCadastrados', JSON.stringify(usuariosExistentes));
-      
-      navigate('/login');
+        const novoUsuario: Usuario = {
+          name,
+          cpf,
+          phone,
+          userType,
+          password
+        };
+
+        const saveRequest = store.put(novoUsuario);
+
+        saveRequest.onsuccess = () => {
+          localStorage.setItem('userName', name);
+          localStorage.setItem('userRole', userType);
+          navigate('/login');
+        };
+      };
     }
   };
 
   const isPasswordInvalid = password.length > 0 && password.length < 8;
 
   return (
-    <div className="h-screen bg-white flex flex-col lg:flex-row overflow-hidden font-sans">
+    <div className="h-screen bg-white flex flex-col lg:flex-row overflow-hidden font-sans text-left">
       <div className="hidden lg:flex flex-col items-center justify-center bg-blue-900 px-8 lg:w-[35%] xl:w-[30%] text-white relative">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-48 h-48 bg-white rounded-full blur-3xl"></div>
@@ -78,7 +87,7 @@ export const Register = () => {
             <Ticket size={40} className="text-white" />
           </div>
           <h1 className="text-4xl font-black tracking-tighter uppercase mb-3">FilaZero</h1>
-          <p className="text-blue-100 text-sm max-w-xs leading-relaxed opacity-80">
+          <p className="text-blue-100 text-sm max-w-xs leading-relaxed opacity-80 text-center">
             Sua experiência de atendimento redefinida com praticidade e respeito ao seu tempo.
           </p>
         </div>
@@ -104,7 +113,7 @@ export const Register = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">CPF</label>
                 <div className="relative">
@@ -140,47 +149,47 @@ export const Register = () => {
 
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tipo de Perfil</label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-3">
                 <button 
                   type="button"
                   onClick={() => setUserType('paciente')}
-                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all gap-1 ${
                     userType === 'paciente' 
                     ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
                     : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
                   }`}
                 >
-                  <User size={14} />
+                  <User size={16} />
                   <span className="text-[8px] font-bold uppercase text-center">Paciente</span>
                 </button>
                 <button 
                   type="button"
                   onClick={() => setUserType('atendente')}
-                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all gap-1 ${
                     userType === 'atendente' 
                     ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
                     : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
                   }`}
                 >
-                  <Stethoscope size={14} />
+                  <Stethoscope size={16} />
                   <span className="text-[8px] font-bold uppercase text-center">Atendente</span>
                 </button>
                 <button 
                   type="button"
                   onClick={() => setUserType('admin')}
-                  className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1 ${
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all gap-1 ${
                     userType === 'admin' 
                     ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' 
                     : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-blue-200'
                   }`}
                 >
-                  <ShieldCheck size={14} />
+                  <ShieldCheck size={16} />
                   <span className="text-[8px] font-bold uppercase text-center">Admin</span>
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Senha</label>
                 <div className="relative">
@@ -214,7 +223,7 @@ export const Register = () => {
             <div className="flex items-center gap-2 py-1">
               <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer" required />
               <label className="text-[11px] text-slate-500 font-medium">
-                Li e aceito os <span className="text-blue-600 font-bold cursor-pointer">termos de uso</span> e a <span className="text-blue-600 font-bold cursor-pointer">privacidade</span>.
+                Li e aceito os  <span className="text-blue-600 font-bold cursor-pointer">termos de uso</span> e a <span className="text-blue-600 font-bold cursor-pointer">privacidade</span>.
               </label>
             </div>
 
