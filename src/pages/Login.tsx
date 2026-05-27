@@ -85,7 +85,7 @@ export const Login = () => {
           {erro && (
             <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="text-red-500" size={18} />
-              <p className="text-red-600 text-xs font-bold">{erro}</p>
+              <p className="text-red-600 text-xs font-bold leading-tight">{erro}</p>
             </div>
           )}
 
