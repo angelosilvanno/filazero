@@ -28,27 +28,47 @@ export const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const usuarios = JSON.parse(localStorage.getItem('usuariosCadastrados') || '[]');
-    const usuarioEncontrado = usuarios.find((u: Usuario) => u.cpf === cpf && u.password === password);
+    const request = indexedDB.open('FilaZeroDB', 1);
 
-    if (usuarioEncontrado) {
-      localStorage.setItem('userName', usuarioEncontrado.name);
-      localStorage.setItem('userRole', usuarioEncontrado.userType);
-
-      if (usuarioEncontrado.userType === 'admin') {
-        navigate('/admin');
-      } else if (usuarioEncontrado.userType === 'atendente') {
-        navigate('/attendant');
-      } else {
-        navigate('/citizen');
+    request.onsuccess = (event: Event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      
+      if (!db.objectStoreNames.contains('usuarios')) {
+        setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
+        return;
       }
-    } else {
-      setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
-    }
+
+      const transaction = db.transaction('usuarios', 'readonly');
+      const store = transaction.objectStore('usuarios');
+      const getRequest = store.get(cpf);
+
+      getRequest.onsuccess = () => {
+        const usuarioEncontrado = getRequest.result as Usuario;
+
+        if (usuarioEncontrado && usuarioEncontrado.password === password) {
+          localStorage.setItem('userName', usuarioEncontrado.name);
+          localStorage.setItem('userRole', usuarioEncontrado.userType);
+
+          if (usuarioEncontrado.userType === 'admin') {
+            navigate('/admin');
+          } else if (usuarioEncontrado.userType === 'atendente') {
+            navigate('/attendant');
+          } else {
+            navigate('/citizen');
+          }
+        } else {
+          setErro('Dados de acesso incorretos. Verifique seu CPF e senha.');
+        }
+      };
+    };
+
+    request.onerror = () => {
+      setErro('Erro ao acessar a base de dados.');
+    };
   };
 
   return (
-    <div className="h-screen w-full bg-white flex flex-col lg:flex-row overflow-hidden font-sans">
+    <div className="h-screen w-full bg-white flex flex-col lg:flex-row overflow-hidden font-sans text-left">
       <div className="hidden lg:flex flex-col items-center justify-center bg-blue-900 px-8 lg:w-[32%] xl:w-[28%] text-white relative h-full">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-48 h-48 bg-white rounded-full blur-3xl"></div>
@@ -60,7 +80,7 @@ export const Login = () => {
             <Ticket size={40} className="text-white" />
           </div>
           <h1 className="text-4xl font-black tracking-tighter uppercase mb-3 text-white">FilaZero</h1>
-          <p className="text-blue-100 text-sm max-w-xs leading-relaxed opacity-80">
+          <p className="text-blue-100 text-sm max-w-xs leading-relaxed opacity-80 text-center">
             Sua experiência de atendimento redefinida com praticidade e respeito ao seu tempo.
           </p>
         </div>
@@ -159,7 +179,7 @@ export const Login = () => {
         </div>
 
         <footer className="mt-10 text-center text-slate-400 space-y-3">
-          <p className="text-[11px] font-medium">
+          <p className="text-[11px] font-medium text-center">
             © {new Date().getFullYear()} FilaZero. Todos os direitos reservados.
           </p>
           <div className="flex gap-4 justify-center text-[9px] font-black uppercase tracking-widest">
