@@ -171,9 +171,9 @@ export const Login = () => {
             <p className="text-[11px] text-slate-400 font-medium tracking-wide">Ainda não tem uma conta?</p>
             <Link 
               to="/register" 
-              className="block w-full bg-slate-100 text-blue-600 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center uppercase tracking-widest"
+              className="block w-full bg-slate-100 text-blue-600 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center"
             >
-              Criar conta gratuita
+              Criar Conta
             </Link>
           </div>
         </div>
