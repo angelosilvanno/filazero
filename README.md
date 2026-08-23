@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# FilaZero — Sistema de Gestão de Filas Online
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **FilaZero** é uma solução web moderna criada para acabar com as filas presenciais exaustivas em postos de saúde, clínicas e órgãos públicos, devolvendo o tempo e a dignidade ao cidadão.
 
-Currently, two official plugins are available:
+## 🔥 Introdução
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Muitas pessoas ainda precisam chegar de madrugada em locais de atendimento para garantir uma senha, enfrentando horas de espera sem saber quando serão chamadas. O objetivo do **FilaZero** é digitalizar esse processo, permitindo que o usuário entre na fila de forma online e acompanhe sua posição em tempo real pelo celular.
 
-## React Compiler
+### Principais Funcionalidades:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Para o Cidadão:** Cadastro e login seguro, escolha de unidade/serviço, geração de senha digital e acompanhamento de posição com tempo estimado.
+*   **Para o Atendente (Médico/Recepção):** Painel operacional para chamada de senhas, cronômetro de atendimento em tempo real e gestão de faltas.
+*   **Para o Administrador (Gestor):** Painel de gestão estratégica com gráficos de volume de atendimento, monitoramento global de unidades e métricas de eficiência.
+*   **Diferenciais:** Design responsivo (Mobile-First), acessibilidade para todas as idades e persistência de dados local (IndexedDB).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### ⚙️ Pré-requisitos
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+*   [Git](https://git-scm.com)
+*   [Node.js](https://nodejs.org/en/) (recomenda-se versão 18 ou superior)
+*   Um gerenciador de pacotes como o **npm** (vem com o Node) ou **yarn**.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🔨 Guia de instalação
+
+Siga o passo a passo abaixo para rodar o projeto em seu ambiente de desenvolvimento:
+
+```bash
+# 1. Clone este repositório
+git clone https://github.com/angelosilvanno/filazero.git
+
+# 2. Acesse a pasta do projeto no terminal
+cd filazero
+
+# 3. Instale as dependências necessárias
+npm install
+
+# 4. Execute a aplicação em modo de desenvolvimento
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📦 Tecnologias usadas:
