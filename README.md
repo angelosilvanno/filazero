@@ -13,16 +13,12 @@ Muitas pessoas ainda precisam chegar de madrugada em locais de atendimento para 
 *   **Para o Administrador (Gestor):** Painel de gestão estratégica com gráficos de volume de atendimento, monitoramento global de unidades e métricas de eficiência.
 *   **Diferenciais:** Design responsivo (Mobile-First), acessibilidade para todas as idades e persistência de dados local (IndexedDB).
 
----
-
 ### ⚙️ Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 *   [Git](https://git-scm.com)
 *   [Node.js](https://nodejs.org/en/) (recomenda-se versão 18 ou superior)
 *   Um gerenciador de pacotes como o **npm** (vem com o Node) ou **yarn**.
-
----
 
 ### 🔨 Guia de instalação
 
@@ -41,7 +37,7 @@ npm install
 # 4. Execute a aplicação em modo de desenvolvimento
 npm run dev
 ```
+## 📦 Tecnologias usadas:
 
----
 
 ## 📦 Tecnologias usadas:
