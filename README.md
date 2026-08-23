@@ -37,7 +37,5 @@ npm install
 # 4. Execute a aplicação em modo de desenvolvimento
 npm run dev
 ```
-## 📦 Tecnologias usadas:
-
 
 ## 📦 Tecnologias usadas:
